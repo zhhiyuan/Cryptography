@@ -55,7 +55,6 @@ class DES():
             f=open(filename,'wb')
             #将内容转换为字节
             byte = bytes(int(b, 2) for b in List)
-
             f.write(byte)
         except IOError:
             print('Error: write file :\'{}\' error!'.format(filename))
@@ -82,7 +81,7 @@ class DES():
         return result
     def __fill(self,string):
         '''
-        如果字符长度不是8的倍数，填充
+        如果字符长度不是64位，填充
         :param BinList:
         :return:
         '''
@@ -108,9 +107,9 @@ class DES():
         times = len(BinList)//8
 
         for i in range(times):
-            #将二进制分离cheng
+            #将二进制分离
             group = self.__Separation(BinList[i*8:i*8+8])
-            #将二进制合并
+            #将二进制合并并做加密
             result = self.__merge(self.__cipher(group,self.key,'encrypt'))
             #将结果保存在out里面
             out.extend(result)

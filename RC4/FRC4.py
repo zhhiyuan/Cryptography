@@ -1,6 +1,5 @@
 ﻿import argparse
 import time
-import Structer
 
 class RC4():
     def __init__(self,key):
@@ -10,9 +9,10 @@ class RC4():
     def __readfile(self,filename):
         try:
             bytesList=[]
-            #以二进制形式读文件
+            #以字节形式读文件
             f=open(filename,'rb')
             text = f.read()
+            print(type(text))
             return text
         except IOError:
             print('Error:read file:{} error!'.format(filename))
@@ -23,6 +23,8 @@ class RC4():
             f=open(filename,'wb')
             #将内容转换为字节
             byte = bytes(b for b in text)
+            for each in byte:
+                hex(each)
             f.write(byte)
         except IOError:
             print('Error: write file :\'{}\' error!'.format(filename))
