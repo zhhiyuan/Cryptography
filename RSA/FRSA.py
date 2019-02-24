@@ -173,7 +173,7 @@ class RSA():
                 continue
             print()
             print('Public key is （{0},{1}）;\nPrivate key is （{2},{3}）'.format(hex(e)[2:],hex(n)[2:], hex(d)[2:],hex(n)[2:]))
-            print('The pkfile stored in \'{}\',the skfile stored in \'{}\'.'.format(pkfile,skfile))
+            print('The public key stored in \'{}\',the private key stored in \'{}\'.'.format(pkfile,skfile))
             pk=open(pkfile,'w')
             pk.write(hex(e)[2:]+','+hex(n)[2:])
             sk=open(skfile,'w')
@@ -245,7 +245,7 @@ def arg():
     elif args.generate_keys:
         pkfile = args.inputfile
         skfile = args.outputfile
-        length = args.generate_keys
+        length = int(args.generate_keys)//8
         rsa = RSA()
         if length is None:
             length = 128
@@ -262,3 +262,6 @@ def arg():
 
 if __name__ == '__main__':
    arg()
+   '''
+   python FRSA.py -g 1024 pk.txt sk.txtd
+   '''

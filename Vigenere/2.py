@@ -4,7 +4,6 @@ import argparse
    cipher -e/-d key inputfile outputfile 
 
 '''
-
 def get_new_key(key,length):
     '''
     统一英文和密钥的长度
@@ -16,20 +15,33 @@ def get_new_key(key,length):
         return key
     elif len(key) > length: #如果密钥过长，缩减密钥长度
         return key[:length]
-    else:       #如果密钥过短
+    else:       #如果密钥过短，扩大密钥长度
         round = int(length/len(key))
         key = key * round + key[: length % len(key)]
         return key
 
 def get_ciphertext(plaintext,key,type):
+    '''
+    加密（解密）的处理部分
+    :param plaintext:
+    :param key:
+    :param type:
+    :return:
+    '''
     ciphertext=[]
     if type=='cipher':
         for i in range(len(plaintext)):
-            ciphertext.append(chr((ord(plaintext[i]) - ord('a') + ord(key[i]) - ord('a')) % 26 + ord('a')))
+            if plaintext[i].isalpha():
+                ciphertext.append(chr((ord(plaintext[i]) - ord('a') + ord(key[i]) - ord('a')) % 26 + ord('a')))
+            else:
+                ciphertext.append(plaintext[i])
         return ciphertext
     else:
         for i in range(len(plaintext)):
-            ciphertext.append(chr((ord(plaintext[i]) - ord(key[i])) % 26 + ord('a')))
+            if plaintext[i].isalpha():
+                ciphertext.append(chr((ord(plaintext[i]) - ord(key[i])) % 26 + ord('a')))
+            else:
+                ciphertext.append(plaintext[i])
         return ciphertext
 
 def cipher(plaintext, key):
@@ -71,6 +83,7 @@ def deal_data(plaintext,ciphertext,val):
         return str_plaintext.lower(),str_ciphertext.upper()
     else:
         return str_plaintext.upper(),str_ciphertext.lower()
+
 def main():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()  # 加入互斥参数
@@ -93,7 +106,6 @@ def main():
         plaintext, ciphertext = deal_data(plaintext, ciphertext, val)
         outfile = open(outputfile, 'w')
         outfile.write(ciphertext)
-        print('the plaintext is: {}'.format(plaintext))
         print('the ciphertext is: {}'.format(ciphertext))
         print('Successfully written into the file \"{}\"! '.format(outputfile))
     elif args.decrypt:
@@ -110,12 +122,11 @@ def main():
         outfile = open(outputfile, 'w')
         outfile.write(plaintext)
         print('the plaintext is: {}'.format(plaintext))
-        print('the ciphertext is: {}'.format(ciphertext))
         print('Successfully written into the file \"{}\"! '.format(outputfile))
 
 
 if __name__ == '__main__':
     main()
     '''
-    格式：python command_Vigenere -e/-d [8位key] [infile] [outfile]
+    格式：python 2.py -e/-d [key] [infile] [outfile]
     '''
